@@ -1,7 +1,9 @@
 import captions
 import json
+import llama_utils
 
 captions.generate_captions()
+model = llama_utils.LlamaModel(model="llama2", base_url="http://localhost:11434")
 with open('captions_output.json', 'r') as file:
     data = json.load(file)
     for segment, frames in data.items():
@@ -13,7 +15,8 @@ with open('captions_output.json', 'r') as file:
                 The descriptions are in json format:   {"frame": "frame_0001.jpg", "caption": "caption text"}
                 Here are the detailed descriptions of each frame: 
                 '''+str(frames[0])
-        print("Prompt:")    
-        print(prompt)
+        response = model.analyze_captions_streaming(prompt)
+        print("Response:") 
+        print(response)
         print()  # blank line for readability
 
