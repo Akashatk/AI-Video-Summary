@@ -15,32 +15,16 @@ class LlamaAnalyzer:
         self.base_url = base_url
         print(f"🤖 Using Ollama model: {model}")
     
-    def analyze_captions(self, captions_dict):
+    def analyze_captions(self, prompt):
         """
         Sends frame captions to Llama for analysis.
         
         Args:
-            captions_dict: Dictionary with frame names as keys and captions as values
+           prompts
         
         Returns:
             Analysis text from Llama
         """
-        # Combine all captions into one prompt
-        frames_text = "\n".join([f"{frame}: {caption}" for frame, caption in captions_dict.items()])
-        
-        prompt = f"""You are an expert physiotherapist analyzing exercise video frames.
-Below are descriptions of frames from an exercise video:
-
-{frames_text}
-
-Based on these frame descriptions, provide:
-1. Overall assessment of the exercise technique
-2. Common mistakes or issues observed
-3. Recommendations for improvement
-4. Safety concerns if any
-5. Progressive quality throughout the video
-
-Provide a detailed professional analysis."""
 
         print("Sending to Llama... (this may take a minute)")
         
@@ -63,27 +47,12 @@ Provide a detailed professional analysis."""
         except requests.exceptions.ConnectionError:
             raise Exception("Cannot connect to Ollama. Make sure Ollama is running (ollama serve)")
     
-    def analyze_captions_streaming(self, captions_dict):
+    def analyze_captions_streaming(self, prompt):
         """
         Streams response from Llama for real-time output.
         Shows the response as it's being generated.
         """
-        frames_text = "\n".join([f"{frame}: {caption}" for frame, caption in captions_dict.items()])
         
-        prompt = f"""You are an expert physiotherapist analyzing exercise video frames.
-Below are descriptions of frames from an exercise video:
-
-{frames_text}
-
-Based on these frame descriptions, provide:
-1. Overall assessment of the exercise technique
-2. Common mistakes or issues observed
-3. Recommendations for improvement
-4. Safety concerns if any
-5. Progressive quality throughout the video
-
-Provide a detailed professional analysis."""
-
         print("Streaming response from Llama...\n")
         
         try:
